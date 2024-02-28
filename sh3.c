@@ -136,24 +136,23 @@ void runcmd(struct cmd *cmd)
                 exit(-1);
             }
 
-            close(pipefd[0]);    // 关闭读取端
-            runcmd(pcmd->right); // 递归执行右侧命令
+            close(pipefd[0]);
+            runcmd(pcmd->right);
             exit(0);
         }
         else
-        {                     // 父进程
-            close(pipefd[0]); // 关闭读取端
+        {
+            close(pipefd[0]);
 
-            // 将标准输出重定向到管道的写入端
             if (dup2(pipefd[1], 1) < 0)
             {
                 fprintf(stderr, "dup2 error\n");
                 exit(-1);
             }
 
-            close(pipefd[1]);   // 关闭写入端
-            runcmd(pcmd->left); // 递归执行左侧命令
-            wait(NULL);         // 等待子进程结束
+            close(pipefd[1]);
+            runcmd(pcmd->left);
+            wait(NULL);
         }
 
         break;
