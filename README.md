@@ -47,6 +47,7 @@ rm y1
 ls | sort | uniq | wc
 ```
 List the current directory contents, sort them, remove duplicates, and count the unique entries, displaying the counts directly in the shell.
+
 2. Clean up by removing the file 'y':
 ```bash
 rm y
