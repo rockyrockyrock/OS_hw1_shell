@@ -29,15 +29,15 @@ When a command prefixed with a space (' '), the shell attemps to execute the com
 
 ```bash
 case ' ':
-        ecmd = (struct execcmd *)cmd;
-        if (ecmd->argv[0] == 0)
-            exit(0);
-        if (execvp(ecmd->argv[0], ecmd->argv) < 0)
-        {
-            perror(ecmd->argv[0]);
-            exit(1);
-        }
-        break;
+    ecmd = (struct execcmd *)cmd;
+    if (ecmd->argv[0] == 0)
+        exit(0);
+    if (execvp(ecmd->argv[0], ecmd->argv) < 0)
+    {
+        perror(ecmd->argv[0]);
+        exit(1);
+    }
+    break;
 ```
 
 ### Redirecting Input/Output ('<', '>'):
@@ -52,43 +52,43 @@ For commands invovling redirection ('<' for input, '>' for output), the shell re
 
 ```bash
 case '>':
-    case '<':
-        rcmd = (struct redircmd *)cmd;
-        int fd;
+case '<':
+    rcmd = (struct redircmd *)cmd;
+    int fd;
 
-        if (rcmd->type == '<')
+    if (rcmd->type == '<')
+    {
+        fd = open(rcmd->file, rcmd->mode);
+        if (fd < 0)
         {
-            fd = open(rcmd->file, rcmd->mode);
-            if (fd < 0)
-            {
-                fprintf(stderr, "cannot open %s\n", rcmd->file);
-                exit(-1);
-            }
-            if (dup2(fd, 0) < 0)
-            {
-                fprintf(stderr, "dup2 error\n");
-                exit(-1);
-            }
+            fprintf(stderr, "cannot open %s\n", rcmd->file);
+            exit(-1);
         }
-        else
-        { // rcmd->type == '>'
-            fd = open(rcmd->file, rcmd->mode, 0666);
-            if (fd < 0)
-            {
-                fprintf(stderr, "cannot create %s\n", rcmd->file);
-                exit(-1);
-            }
-
-            if (dup2(fd, 1) < 0)
-            {
-                fprintf(stderr, "dup2 error\n");
-                exit(-1);
-            }
+        if (dup2(fd, 0) < 0)
+        {
+            fprintf(stderr, "dup2 error\n");
+            exit(-1);
+        }
+    }
+    else
+    { // rcmd->type == '>'
+        fd = open(rcmd->file, rcmd->mode, 0666);
+        if (fd < 0)
+        {
+            fprintf(stderr, "cannot create %s\n", rcmd->file);
+            exit(-1);
         }
 
-        close(fd);
-        runcmd(rcmd->cmd);
-        break;
+        if (dup2(fd, 1) < 0)
+        {
+            fprintf(stderr, "dup2 error\n");
+            exit(-1);
+        }
+    }
+
+    close(fd);
+    runcmd(rcmd->cmd);
+    break;
 ```
 
 ### Creating Pipelines ('|')
@@ -111,51 +111,51 @@ Pipelines allow the output of one command to be used as the input for another.
 
 ```bash
 case '|':
-        pcmd = (struct pipecmd *)cmd;
-        int pipefd[2];
-        pid_t pid;
+    pcmd = (struct pipecmd *)cmd;
+    int pipefd[2];
+    pid_t pid;
 
-        if (pipe(pipefd) < 0)
+    if (pipe(pipefd) < 0)
+    {
+        fprintf(stderr, "pipe error\n");
+        exit(-1);
+    }
+
+    if ((pid = fork()) < 0)
         {
-            fprintf(stderr, "pipe error\n");
+        fprintf(stderr, "fork error\n");
+        exit(-1);
+    }
+    else if (pid == 0)
+    {
+        close(pipefd[1]);
+
+        if (dup2(pipefd[0], 0) < 0)
+        {
+            fprintf(stderr, "dup2 error\n");
             exit(-1);
         }
 
-        if ((pid = fork()) < 0)
+        close(pipefd[0]);
+        runcmd(pcmd->right);
+        exit(0);
+    }
+    else
+    {
+        close(pipefd[0]);
+
+        if (dup2(pipefd[1], 1) < 0)
         {
-            fprintf(stderr, "fork error\n");
+            fprintf(stderr, "dup2 error\n");
             exit(-1);
         }
-        else if (pid == 0)
-        {
-            close(pipefd[1]);
 
-            if (dup2(pipefd[0], 0) < 0)
-            {
-                fprintf(stderr, "dup2 error\n");
-                exit(-1);
-            }
+        close(pipefd[1]);
+        runcmd(pcmd->left);
+        wait(NULL);
+    }
 
-            close(pipefd[0]);
-            runcmd(pcmd->right);
-            exit(0);
-        }
-        else
-        {
-            close(pipefd[0]);
-
-            if (dup2(pipefd[1], 1) < 0)
-            {
-                fprintf(stderr, "dup2 error\n");
-                exit(-1);
-            }
-
-            close(pipefd[1]);
-            runcmd(pcmd->left);
-            wait(NULL);
-        }
-
-        break;
+    break;
 ```
 
 ## Testing Process
