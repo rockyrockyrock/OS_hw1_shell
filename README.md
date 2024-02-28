@@ -1,11 +1,11 @@
-Simplified Shell
+# Simplified Shell
 
 The simplified shell is constructed using the skeleton of xv6 shell sh.c, consisting of parsing shell commands and implementing their execution.
 On top of that, it is a minimalistic implementation designed to demonstrate basic functionalities of a Unix-like shell.
 It supports executing commands, handling I/O redirection ('<', '>'), and pipling ('|') between commands.
 
 
-# Features
+## Features
 - Command Execution: Execute basic commands like 'ls, 'cat', 'rm', 'echo', etc.
 - I/O Redirection:
     - Input redirection ('<') to read input from a file.
@@ -14,10 +14,10 @@ It supports executing commands, handling I/O redirection ('<', '>'), and pipling
 - Error Handling: Basic error handling for system call failures and command parsing errors.
 
 
-# Testing Process
+## Testing Process
 The shell has been tested using a series of commands that utilie its core funcitonalities. Below are the tests perfromed.
 
-## Test1: Output Redirection and File Operations
+### Test1: Output Redirection and File Operations
 1. List directory contents and redirect output:
 ```bash
 ls > y
@@ -38,7 +38,7 @@ Display the contents of 'y1', which contains the counts of unique lines, words, 
 rm y1
 ```
 
-## Test2: Piping and Sorting
+### Test2: Piping and Sorting
 1. LIst, sort, remove duplicates, and count unique directory contents:
 ```bash
 ls | sort | uniq | wc
@@ -50,7 +50,7 @@ rm y
 ```
 
 
-# Conclusion
+## Conclusion
 This simplified shell demonstrates basic shell funcionalities with a focus on process creation, I/O redirection, and inter-process communication through pipes.
 Future improvements could include support for background processes, signal handling, and built-in commands like 'cd'.
 For further testing or development, additional commands and scenarios can be added to the testing process to ensure robustness and reliability.
