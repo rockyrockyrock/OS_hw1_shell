@@ -71,7 +71,7 @@ case '<':
         }
     }
     else
-    { // rcmd->type == '>'
+    {
         fd = open(rcmd->file, rcmd->mode, 0666);
         if (fd < 0)
         {
