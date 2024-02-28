@@ -6,18 +6,18 @@ It supports executing commands, handling I/O redirection ('<', '>'), and piping 
 
 
 ## Features
-- Command Execution: Execute basic commands like 'ls, 'cat', 'rm', 'echo', etc.
+- Command Execution: Execute basic commands like `ls`, `cat`, `rm`, `echo`, etc.
 - I/O Redirection:
-    - Input redirection ('<') to read input from a file.
-    - Output redirection ('>') to write output to a file, overwriting the file if it exists.
-- Piping ('|'): Allows chaining commands together, where the output of one command serves as the input to the next.
+    - Input redirection (`<`) to read input from a file.
+    - Output redirection (`>`) to write output to a file, overwriting the file if it exists.
+- Piping (`|`): Allows chaining commands together, where the output of one command serves as the input to the next.
 - Error Handling: Basic error handling for system call failures and command parsing errors.
 
 
 ## Command Execution
 Below outlines the stpes involved in executing commands within this simple shell implementation.
 In particular, we will be focusing on the commands of excuting programs, redirecting input/output, and creating pipelines between commands.
-The shell processes commands based on their type, indicated by a leading character (' ', '>', '<', '|').
+The shell processes commands based on their type, indicated by a leading character (`' '`, `>`, `<`, `|`).
 
 ### Executing Commands (' ')
 When a command prefixed with a space (' '), the shell attemps to execute the command specified by the user.
