@@ -23,16 +23,19 @@ The shell has been tested using a series of commands that utilize its core funct
 ls > y
 ```
 This command lists the current directory contents, redirecting the output to a file named 'y'.
+
 2. Sort, remove duplicates, and count unique entries from the file:
 ```bash
 cat y | sort | uniq | wc < y1
 ```
 Read the contents of 'y, sort it, remove duplicates, and count the lines, words, and characters, writing the output to 'y1'.
+
 3. Display the count of unique entries:
 ```bash
 cat y1
 ```
 Display the contents of 'y1', which contains the counts of unique lines, words, and characters from 'y'.
+
 4. Clean up by removing the file 'y1':
 ```bash
 rm y1
