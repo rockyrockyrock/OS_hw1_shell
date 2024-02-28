@@ -10,12 +10,12 @@ It supports executing commands, handling I/O redirection ('<', '>'), and pipling
 - I/O Redirection:
     - Input redirection ('<') to read input from a file.
     - Ouput redirection ('>') to write output to a file, overwriting the file if it exists.
-- Pipling ('|'): Allows chaining commands together, where the output of one command serves as the input to the next.
+- Piping ('|'): Allows chaining commands together, where the output of one command serves as the input to the next.
 - Error Handling: Basic error handling for system call failures and command parsing errors.
 
 
 ## Testing Process
-The shell has been tested using a series of commands that utilie its core funcitonalities. Below are the tests perfromed.
+The shell has been tested using a series of commands that utilize its core funcitonalities. Below are the tests performed.
 
 ### Test1: Output Redirection and File Operations
 1. List directory contents and redirect output:
