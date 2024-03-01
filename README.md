@@ -1,3 +1,5 @@
+// ID: 2065388 Ling Li, ID:2090149 Yi Cheng Lu, ID:2088679 LinLin Zhang
+
 # Simplified Shell
 
 The simplified shell is constructed using the skeleton of xv6 shell sh.c, consisting of parsing shell commands and implementing their execution.
